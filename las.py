@@ -18,6 +18,7 @@ and makes the data available as a Python object.
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
+from __future__ import print_function
 
 import re
 import keyword
@@ -164,8 +165,8 @@ class LASSection(object):
             namestr = name
             if item.units != '':
                 namestr = namestr + (" (%s)" % item.units)
-            print "%-16s %-30s [%s]" % (namestr, "'" + item.data + "'",
-                                        item.descr)
+            print("%-16s %-30s [%s]" % (namestr, "'" + item.data + "'",
+                                        item.descr))
 
 
 class LASReader(object):
@@ -297,7 +298,11 @@ class LASReader(object):
         Curve section of the file.
         """
         opened_here = False
-        if isinstance(f, basestring):
+        try:
+            string_type = basestring
+        except NameError:
+            string_type = str
+        if isinstance(f, string_type):
             opened_here = True
             f = open(f, 'r')
 
