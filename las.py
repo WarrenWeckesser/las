@@ -4,7 +4,7 @@ The main class defined here is LASReader, a class that reads a LAS file
 and makes the data available as a Python object.
 """
 
-# Copyright (c) 2011, Warren Weckesser
+# Copyright (c) 2011, 2014 Warren Weckesser
 #
 # Permission to use, copy, modify, and/or distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -376,27 +376,3 @@ class LASReader(object):
 
         if opened_here:
             f.close()
-
-
-if __name__ == "__main__":
-    import sys
-
-    las = LASReader(sys.argv[1], null_subs=np.nan)
-    print "wrap? ", las.wrap
-    print "vers? ", las.vers
-    print "null =", las.null
-    print "start =", las.start
-    print "stop  =", las.stop
-    print "step  =", las.step
-    print "Version ---"
-    las.version.display()
-    print "Well ---"
-    las.well.display()
-    print "Curves ---"
-    las.curves.display()
-    print "Parameters ---"
-    las.parameters.display()
-    print "Other ---"
-    print las.other
-    print "Data ---"
-    print las.data2d
