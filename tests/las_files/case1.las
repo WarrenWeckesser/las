@@ -34,7 +34,7 @@ UWI     .       100123401234W500                 :UNIQUE WELL ID
  BHT    .DEGC           35.5000         :   BOTTOM HOLE TEMPERATURE
  BS     .MM             200.0000        :   BIT SIZE
  FD     .K/M3           1000.0000       :   FLUID DENSITY
- MATR   .               SAND            :   NEUTRON MATRIX
+ MATR   .               SAND:COARSE     :   NEUTRON MATRIX
  MDEN   .               2710.0000       :   LOGGING MATRIX DENSITY
  RMF    .OHMM           0.2160          :   MUD FILTRATE RESISTIVITY
  DFD    .K/M3           1525.0000       :   DRILL FLUID DENSITY
@@ -44,4 +44,4 @@ UWI     .       100123401234W500                 :UNIQUE WELL ID
 ~A  DEPTH     DT    RHOB        NPHI   SFLU    SFLA      ILM      ILD
 1670.000   123.250 2550.000    0.500  123.750  123.500  110.250  105.500
 1669.875   123.500 2551.000    0.750  119.750  120.500  111.250  105.500
-1669.750   126.500 2552.000    0.500  120.750  123.500  112.250  115.500
+1669.750   126.500 2552.000    0.500  120.750  123.500 -999.250 -999.250

@@ -10,7 +10,7 @@ case1_other = """\
 case1_data2d = np.array([
     [1670.000, 123.25, 2550.0, 0.50, 123.750, 123.500, 110.250, 105.5],
     [1669.875, 123.50, 2551.0, 0.75, 119.750, 120.500, 111.250, 105.5],
-    [1669.750, 126.50, 2552.0, 0.50, 120.750, 123.500, 112.250, 115.5],
+    [1669.750, 126.50, 2552.0, 0.50, 120.750, 123.500, -999.25, -999.25],
 ])
 
 
@@ -18,7 +18,15 @@ class TestCase1(unittest.TestCase):
 
     def test_case1(self):
         log = las.LASReader('las_files/case1.las')
-        self.check_case1_log(log)
+        self.check_case1_log(log, null_subs=None)
+
+    def test_case1_null_subs_nan(self):
+        log = las.LASReader('las_files/case1.las', null_subs=np.nan)
+        self.check_case1_log(log, null_subs=np.nan)
+
+    def test_case1b(self):
+        log = las.LASReader('las_files/case1b.las')
+        self.check_case1_log(log, null_subs=None)
 
     def check_item(self, item, units, data, value, descr):
         self.assertEqual(item.units, units)
@@ -26,7 +34,7 @@ class TestCase1(unittest.TestCase):
         self.assertEqual(item.value, value)
         self.assertEqual(item.descr, descr)
 
-    def check_case1_log(self, log):
+    def check_case1_log(self, log, null_subs=None):
         self.assertEqual(log.wrap, False)
         self.assertEqual(log.vers, '2.0')
         self.assertEqual(log.start, 1670.0)
@@ -36,7 +44,7 @@ class TestCase1(unittest.TestCase):
         self.assertEqual(log.step, -0.125)
         self.assertEqual(log.step_units, 'M')
         self.assertEqual(log.null, -999.25)
-        self.assertEqual(log.null_subs, None)
+        np.testing.assert_equal(log.null_subs, null_subs)
 
         self.check_item(log.version.VERS,
                         units='', data='2.0', value=2.0,
@@ -46,11 +54,19 @@ class TestCase1(unittest.TestCase):
                         descr='ONE LINE PER DEPTH STEP')
 
         self.assertEqual(log.other, case1_other)
+
+        if null_subs is not None:
+            null_locs = case1_data2d == -999.25
+            case1_data2d[null_locs] = np.nan
+
         np.testing.assert_array_equal(log.data2d, case1_data2d)
         flds = ['DEPT', 'DT', 'RHOB', 'NPHI', 'SFLU', 'SFLA', 'ILM', 'ILD']
         for k, field in enumerate(flds):
             np.testing.assert_array_equal(log.data[field],
                                           case1_data2d[:, k])
+
+        if null_subs is not None:
+            case1_data2d[null_locs] = -999.25
 
         self.check_item(log.well.STRT,
                         units='M', data='1670.0000', value=1670.0,
@@ -152,7 +168,7 @@ class TestCase1(unittest.TestCase):
                         descr='FLUID DENSITY')
         self.check_item(log.parameters.MATR,
                         units='',
-                        data='SAND', value='SAND',
+                        data='SAND:COARSE', value='SAND:COARSE',
                         descr='NEUTRON MATRIX')
         self.check_item(log.parameters.MDEN,
                         units='',
