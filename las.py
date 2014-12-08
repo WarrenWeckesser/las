@@ -43,6 +43,17 @@ def _convert_to_value(s):
     return value
 
 
+def _read_line(f, ignore_blank_lines=True):
+    """Read a line from stdin, skipping blank lines and comments."""
+    ignore = True
+    while ignore:
+        line = f.readline()
+        sline = line.strip()
+        ignore = sline.startswith('#') or (ignore_blank_lines and sline == '')
+        #found_line = len(sline) > 0 and not sline.startswith('#')
+    return line
+
+
 class LASError(Exception):
     pass
 
@@ -308,63 +319,70 @@ class LASReader(object):
 
         self.wrap = False
 
-        line = f.readline()
+        ignore_blank_lines = True
         current_section = None
         current_section_label = ''
-        while not line.startswith('~A'):
-            if not line.startswith('#'):
-                if line.startswith('~'):
-                    if len(line) < 2:
-                        raise LASError("Missing section character after '~'.")
-                    current_section_label = line[1:2]
-                    other = False
-                    if current_section_label == 'V':
-                        current_section = self.version
-                    elif current_section_label == 'W':
-                        current_section = self.well
-                    elif current_section_label == 'C':
-                        current_section = self.curves
-                    elif current_section_label == 'P':
-                        current_section = self.parameters
-                    elif current_section_label == 'O':
-                        current_section = self.other
-                        other = True
-                    else:
-                        raise LASError("Unknown section '%s'" % line)
-                elif current_section is None:
-                    raise LASError("Missing first section.")
+        line = _read_line(f, ignore_blank_lines)
+        line_lstrip = line.lstrip(' ')
+        while not line_lstrip.startswith('~A'):
+            if line_lstrip.startswith('~'):
+                if len(line_lstrip) < 2:
+                    raise LASError("Missing section character after '~'.")
+                current_section_label = line_lstrip[1:2]
+                other = False
+                if current_section_label == 'V':
+                    current_section = self.version
+                    ignore_blank_lines = True
+                elif current_section_label == 'W':
+                    current_section = self.well
+                    ignore_blank_lines = True
+                elif current_section_label == 'C':
+                    current_section = self.curves
+                    ignore_blank_lines = True
+                elif current_section_label == 'P':
+                    current_section = self.parameters
+                    ignore_blank_lines = True
+                elif current_section_label == 'O':
+                    current_section = self.other
+                    ignore_blank_lines = False
+                    other = True
                 else:
-                    if other:
-                        # The 'Other' section is just lines of text, so we
-                        # assemble them into a single string.
-                        self.other += line
-                        current_section = self.other
-                    else:
-                        # Parse the line into a LASItem and add it to the
-                        # current section.
-                        m = LASItem.from_line(line)
-                        current_section.add_item(m)
-                        # Check for the required items whose values we'll
-                        # store as attributes of the LASReader instance.
-                        if current_section == self.version:
-                            if m.name == 'WRAP':
-                                if m.data.strip() == 'YES':
-                                    self.wrap = True
-                            if m.name == 'VERS':
-                                self.vers = m.data.strip()
-                        if current_section == self.well:
-                            if m.name == 'NULL':
-                                self.null = float(m.data)
-                            elif m.name == 'STRT':
-                                self.start = float(m.data)
-                                self.start_units = m.units
-                            elif m.name == 'STOP':
-                                self.stop = float(m.data)
-                                self.stop_units = m.units
-                            elif m.name == 'STEP':
-                                self.step = float(m.data)
-                                self.step_units = m.units
-            line = f.readline()
+                    raise LASError("Unknown section '%s'" % line)
+            elif current_section is None:
+                raise LASError("Missing first section.")
+            else:
+                if other:
+                    # The 'Other' section is just lines of text, so we
+                    # assemble them into a single string.
+                    self.other += line
+                    current_section = self.other
+                else:
+                    # Parse the line into a LASItem and add it to the
+                    # current section.
+                    m = LASItem.from_line(line_lstrip)
+                    current_section.add_item(m)
+                    # Check for the required items whose values we'll
+                    # store as attributes of the LASReader instance.
+                    if current_section == self.version:
+                        if m.name == 'WRAP':
+                            if m.data.strip() == 'YES':
+                                self.wrap = True
+                        if m.name == 'VERS':
+                            self.vers = m.data.strip()
+                    if current_section == self.well:
+                        if m.name == 'NULL':
+                            self.null = float(m.data)
+                        elif m.name == 'STRT':
+                            self.start = float(m.data)
+                            self.start_units = m.units
+                        elif m.name == 'STOP':
+                            self.stop = float(m.data)
+                            self.stop_units = m.units
+                        elif m.name == 'STEP':
+                            self.step = float(m.data)
+                            self.step_units = m.units
+            line = _read_line(f, ignore_blank_lines)
+            line_lstrip = line.lstrip(' ')
 
         # Finished reading the header--all that is left is the numerical
         # data that follows the '~A' line.  We'll construct a structured
