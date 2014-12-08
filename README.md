@@ -2,8 +2,7 @@ The `las` module implements a reader for a LAS (Log ASCII Standard) well log fil
 For more information about this format, see the Canadian Well Logging Society web page
 (http://www.cwls.org/las/).
 
-Example
--------
+** Example **
 
 The following file, "example1.las" is from "LAS Version 2.0: A Digital Standard for
 Logs; Updated January 2014":
@@ -60,32 +59,51 @@ Logs; Updated January 2014":
 Sample python session:
 
     >>> import las
-    >>> rdr = las.LASReader('example1.las')
-    >>> rdr.start
+    >>> log = las.LASReader('example1.las')
+    >>> log.start
     1670.0
-    >>> rdr.stop
+    >>> log.stop
     1669.75
-    >>> rdr.step
+    >>> log.step
     -0.125
-    >>> rdr.null
+    >>> log.null
     -999.25
-    >>> rdr.well.COMP
+    >>> log.well.COMP
     LASItem(name='COMP', units='', data='ANY OIL COMPANY INC.', descr='COMPANY')
-    >>> rdr.well.COMP.value
+    >>> log.well.COMP.value
     'ANY OIL COMPANY INC.'
-    >>> rdr.well.FLD.value
+    >>> log.well.FLD.value
     'WILDCAT'
-    >>> print(rdr.other)
+    >>> print(log.other)
          Note: The logging tools became stuck at 625 metres causing the data 
          between 625 metres and 615 metres to be invalid.
 
 
-The actual data is stored as a numpy structured array in `rdr.data`:
+The log data is stored as a numpy structured array in `log.data`:
 
-    >>> rdr.data
+    >>> log.data
     array([(1670.0, 123.45, 2550.0, 0.45, 123.45, 123.45, 110.2, 105.6),
            (1669.875, 123.45, 2550.0, 0.45, 123.45, 123.45, 110.2, 105.6),
            (1669.75, 123.45, 2550.0, 0.45, 123.45, 123.45, 110.2, 105.6)], 
           dtype=[('DEPT', '<f8'), ('DT', '<f8'), ('RHOB', '<f8'), ('NPHI', '<f8'), ('SFLU', '<f8'), ('SFLA', '<f8'), ('ILM', '<f8'), ('ILD', '<f8')])
-    >>> rdr.data['RHOB']
+    >>> log.data['RHOB']
     array([ 2550.,  2550.,  2550.])
+
+The data is also available as a two-dimensional numpy array.  First we'll
+adjust numpy's output format.  This is not necessary, but it makes the values
+easier to read.
+
+    >>> import numpy as np
+    >>> np.set_printoptions(precision=4)
+
+The two-dimensional view of the data is called `data2d`:
+
+    >>> log.data2d
+    array([[  1.6700e+03,   1.2345e+02,   2.5500e+03,   4.5000e-01,
+              1.2345e+02,   1.2345e+02,   1.1020e+02,   1.0560e+02],
+           [  1.6699e+03,   1.2345e+02,   2.5500e+03,   4.5000e-01,
+              1.2345e+02,   1.2345e+02,   1.1020e+02,   1.0560e+02],
+           [  1.6698e+03,   1.2345e+02,   2.5500e+03,   4.5000e-01,
+              1.2345e+02,   1.2345e+02,   1.1020e+02,   1.0560e+02]])
+    >>> log.data2d.shape
+    (3, 8)
