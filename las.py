@@ -50,7 +50,6 @@ def _read_line(f, ignore_blank_lines=True):
         line = f.readline()
         sline = line.strip()
         ignore = sline.startswith('#') or (ignore_blank_lines and sline == '')
-        #found_line = len(sline) > 0 and not sline.startswith('#')
     return line
 
 
@@ -77,7 +76,7 @@ class LASItem(object):
 
     def __str__(self):
         s = ("name='%s', units='%s', data='%s', descr='%s'" %
-                (self.name, self.units, self.data, self.descr))
+             (self.name, self.units, self.data, self.descr))
         return s
 
     def __repr__(self):
@@ -165,6 +164,14 @@ class LASSection(object):
         self.names = []
 
     def add_item(self, item):
+        # XXX If the name is already used, this modifies item.name in place.
+        original_name = item.name
+        dupcount = 0
+        while item.name in self.items:
+            # Duplicate name.
+            dupcount += 1
+            item.name = original_name + str(dupcount)
+
         self.items[item.name] = item
         self.names.append(item.name)
         if isidentifier(item.name) and not hasattr(self, item.name):

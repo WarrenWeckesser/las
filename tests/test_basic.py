@@ -13,8 +13,23 @@ case1_data2d = np.array([
     [1669.750, 126.50, 2552.0, 0.50, 120.750, 123.500, -999.25, -999.25],
 ])
 
+dupnames_data2d = np.array([
+    [1670.000, 123.500, 2550.000, 0.500, 123.50, 120.50, 0.750, 0.500],
+    [1669.875, 124.000, 2551.000, 0.750, 124.50, 121.50, 1.000, 0.125],
+    [1669.750, 124.250, 2552.000, 0.125, 125.50, 122.50, 0.250, 0.375],
+])
 
-class TestCase1(unittest.TestCase):
+
+class LogCheck(unittest.TestCase):
+
+    def check_item(self, item, units, data, value, descr):
+        self.assertEqual(item.units, units)
+        self.assertEqual(item.data, data)
+        self.assertEqual(item.value, value)
+        self.assertEqual(item.descr, descr)
+
+
+class TestCase1(LogCheck):
 
     def test_case1(self):
         log = las.LASReader('las_files/case1.las')
@@ -27,12 +42,6 @@ class TestCase1(unittest.TestCase):
     def test_case1b(self):
         log = las.LASReader('las_files/case1b.las')
         self.check_case1_log(log, null_subs=None)
-
-    def check_item(self, item, units, data, value, descr):
-        self.assertEqual(item.units, units)
-        self.assertEqual(item.data, data)
-        self.assertEqual(item.value, value)
-        self.assertEqual(item.descr, descr)
 
     def check_case1_log(self, log, null_subs=None):
         self.assertEqual(log.wrap, False)
@@ -182,6 +191,56 @@ class TestCase1(unittest.TestCase):
                         units='K/M3',
                         data='1525.0000', value=1525.0,
                         descr='DRILL FLUID DENSITY')
+
+
+class TestDupNames(LogCheck):
+
+    def test_dupnames(self):
+        log = las.LASReader('las_files/dupnames.las')
+
+        self.check_item(log.curves.DEPT,
+                        units='M',
+                        data='', value='',
+                        descr='1  DEPTH')
+        self.check_item(log.curves.DT,
+                        units='US/M',
+                        data='60 520 32 00', value='60 520 32 00',
+                        descr='2  SONIC TRANSIT TIME')
+        self.check_item(log.curves.RHOB,
+                        units='K/M3',
+                        data='45 350 01 00', value='45 350 01 00',
+                        descr='3  BULK DENSITY')
+        self.check_item(log.curves.NPHI,
+                        units='V/V',
+                        data='42 890 00 00', value='42 890 00 00',
+                        descr='4  NEUTRON POROSITY')
+        self.check_item(log.curves.SFL,
+                        units='OHMM',
+                        data='07 220 04 00', value='07 220 04 00',
+                        descr='5  SHALLOW RESISTIVITY')
+        self.check_item(log.curves.SFL1,
+                        units='OHMM',
+                        data='07 222 01 00', value='07 222 01 00',
+                        descr='6  DUP NAME')
+        self.check_item(log.curves.NPHI1,
+                        units='V/V',
+                        data='42 890 00 00', value='42 890 00 00',
+                        descr='7  DUP NAME')
+        self.check_item(log.curves.NPHI2,
+                        units='V/V',
+                        data='42 890 00 00', value='42 890 00 00',
+                        descr='8  DUP NAME')
+
+        self.check_item(log.parameters.MUD,
+                        units='',
+                        data='GEL CHEM', value='GEL CHEM',
+                        descr='MUD TYPE')
+        self.check_item(log.parameters.MUD1,
+                        units='',
+                        data='MUCK', value='MUCK',
+                        descr='MORE MUD TYPE')
+
+        np.testing.assert_array_equal(log.data2d, dupnames_data2d)
 
 
 if __name__ == '__main__':
