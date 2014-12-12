@@ -200,6 +200,10 @@ class LASReader(object):
         If f is a file object, it must be opened for reading.
         If f is a string, it must be the filename of a LAS file.
         In that case, the file will be opened and read.
+    null_subs : float (optional)
+        If given, any values in the ~Ascii section that equal the
+        NULL value given in the ~Well section will be replaced with
+        `null_subs`.  A typical value for `null_subs` is `numpy.nan`.
 
     Attributes for LAS Sections
     ---------------------------
@@ -244,10 +248,9 @@ class LASReader(object):
 
     null_subs : float or None
         The value given in the constructor, to be used as the
-        replacement value of each occurrence of `null_value` in
-        the log data.  The value will be None (and no substitution
-        will be done) if the `null_subs` argument is not given to
-        the constructor.
+        replacement value of each occurrence of `null` in the log data.
+        The value will be None (and no substitution will be done) if the
+        `null_subs` argument is not given to the constructor.
 
     start : float, or None
         Numerical value of the 'STRT' item from the '~W' section.
