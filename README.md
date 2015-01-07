@@ -4,7 +4,7 @@ For more information about this format, see the Canadian Well Logging Society we
 
 ** Example **
 
-The following file, "example1.las" is from "LAS Version 2.0: A Digital Standard for
+The following file, "example1.las", is from "LAS Version 2.0: A Digital Standard for
 Logs; Updated January 2014":
 
     ~VERSION INFORMATION
@@ -88,6 +88,8 @@ The log data is stored as a numpy structured array in `log.data`:
           dtype=[('DEPT', '<f8'), ('DT', '<f8'), ('RHOB', '<f8'), ('NPHI', '<f8'), ('SFLU', '<f8'), ('SFLA', '<f8'), ('ILM', '<f8'), ('ILD', '<f8')])
     >>> log.data['RHOB']
     array([ 2550.,  2550.,  2550.])
+    >>> log.data[0]
+    (1670.0, 123.45, 2550.0, 0.45, 123.45, 123.45, 110.2, 105.6)
 
 The data is also available as a two-dimensional numpy array.  First we'll
 adjust numpy's output format.  This is not necessary, but it makes the values
