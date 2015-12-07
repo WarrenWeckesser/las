@@ -1,8 +1,12 @@
+las
+===
+
 The `las` module implements a reader for LAS (Log ASCII Standard) well log files (LAS 2.0).
 For more information about this format, see the Canadian Well Logging Society web page
 (http://www.cwls.org/las/).
 
-** Example **
+Example
+-------
 
 The following file, "example1.las", is from "LAS Version 2.0: A Digital Standard for
 Logs; Updated January 2014":
