@@ -5,8 +5,8 @@ The `las` module implements a reader for LAS (Log ASCII Standard) well log files
 For more information about this format, see the Canadian Well Logging Society web page
 (http://www.cwls.org/las/).
 
-Example
--------
+Example 1
+~~~~~~~~~
 
 The following file, "example1.las", is from "LAS Version 2.0: A Digital Standard for
 Logs; Updated January 2014":
@@ -113,3 +113,37 @@ The two-dimensional view of the data is called `data2d`:
               1.2345e+02,   1.2345e+02,   1.1020e+02,   1.0560e+02]])
     >>> log.data2d.shape
     (3, 8)
+
+
+Example 2
+~~~~~~~~~
+
+The next example reads a file from the Kansas Geological Survey and makes
+a plot of the gamma ray data versus depth using ``matplotlib``.
+
+First, the imports::
+
+    >>> import nump as np
+    >>> import matplotlib.pyplot as plt
+    >>> import las
+    >>> try:
+    ...     from urllib.request import urlopen
+    ... except ImportError:
+    ...     from urllib import urlopen
+    ...
+
+Next, read the file::
+
+    >>> url = "http://www.kgs.ku.edu/software/DEWL/HELP/pc_read/Shamar-1.las"
+    >>> f = urlopen(url)
+    >>> log = las.LASReader(f, null_subs=np.nan)
+
+Finally, make the plot using ``matplotlib``::
+
+    >>> plt.figure(figsize=(9, 5))
+    >>> plt.plot(log.data['DEPT'], log.data['GR'])
+    >>> plt.xlabel(log.curves.DEPT.descr + " (%s)" % log.curves.DEPT.units)
+    >>> plt.ylabel(log.curves.GR.descr + " (%s)" % log.curves.GR.units)
+    >>> plt.title(log.well.WELL.data + ', ' + log.well.DATE.data)
+    >>> plt.grid()
+    >>> plt.show()
