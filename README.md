@@ -6,7 +6,7 @@ For more information about this format, see the Canadian Well Logging Society we
 (http://www.cwls.org/las/).
 
 Example 1
-~~~~~~~~~
+---------
 
 The following file, "example1.las", is from "LAS Version 2.0: A Digital Standard for
 Logs; Updated January 2014":
@@ -116,7 +116,7 @@ The two-dimensional view of the data is called `data2d`:
 
 
 Example 2
-~~~~~~~~~
+---------
 
 The next example reads a file from the Kansas Geological Survey and makes
 a plot of the gamma ray data versus depth using ``matplotlib``.
