@@ -1,7 +1,7 @@
 las
 ===
 
-The `las` module implements a reader for LAS (Log ASCII Standard) well log files (LAS 2.0).
+The ``las`` module implements a reader for LAS (Log ASCII Standard) well log files (LAS 2.0).
 For more information about this format, see the Canadian Well Logging Society web page
 (http://www.cwls.org/las/).
 
@@ -9,7 +9,7 @@ Example 1
 ---------
 
 The following file, "example1.las", is from "LAS Version 2.0: A Digital Standard for
-Logs; Updated January 2014":
+Logs; Updated January 2014"::
 
     ~VERSION INFORMATION
     VERS.                          2.0 :   CWLS LOG ASCII STANDARD -VERSION 2.0
@@ -60,7 +60,7 @@ Logs; Updated January 2014":
     1669.750   123.450 2550.000    0.450  123.450  123.450  110.200  105.600
 
 
-Sample python session:
+Sample python session::
 
     >>> import las
     >>> log = las.LASReader('example1.las')
@@ -83,7 +83,7 @@ Sample python session:
          between 625 metres and 615 metres to be invalid.
 
 
-The log data is stored as a numpy structured array in `log.data`:
+The log data is stored as a numpy structured array in ``log.data``::
 
     >>> log.data
     array([(1670.0, 123.45, 2550.0, 0.45, 123.45, 123.45, 110.2, 105.6),
@@ -97,12 +97,12 @@ The log data is stored as a numpy structured array in `log.data`:
 
 The data is also available as a two-dimensional numpy array.  First we'll
 adjust numpy's output format.  This is not necessary, but it makes the values
-easier to read.
+easier to read::
 
     >>> import numpy as np
     >>> np.set_printoptions(precision=4)
 
-The two-dimensional view of the data is called `data2d`:
+The two-dimensional view of the data is called ``data2d``::
 
     >>> log.data2d
     array([[  1.6700e+03,   1.2345e+02,   2.5500e+03,   4.5000e-01,
