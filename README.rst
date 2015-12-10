@@ -123,7 +123,7 @@ a plot of the gamma ray data versus depth using ``matplotlib``.
 
 First, the imports::
 
-    >>> import nump as np
+    >>> import numpy as np
     >>> import matplotlib.pyplot as plt
     >>> import las
     >>> try:
