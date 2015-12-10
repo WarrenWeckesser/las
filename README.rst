@@ -126,6 +126,7 @@ First, the imports::
     >>> import numpy as np
     >>> import matplotlib.pyplot as plt
     >>> import las
+    >>> import io
     >>> try:
     ...     from urllib.request import urlopen
     ... except ImportError:
@@ -135,7 +136,7 @@ First, the imports::
 Next, read the file::
 
     >>> url = "http://www.kgs.ku.edu/software/DEWL/HELP/pc_read/Shamar-1.las"
-    >>> f = urlopen(url)
+    >>> f = io.StringIO(urlopen(url).read().decode('iso-8859-1'))
     >>> log = las.LASReader(f, null_subs=np.nan)
 
 Finally, make the plot using ``matplotlib``::
@@ -147,3 +148,7 @@ Finally, make the plot using ``matplotlib``::
     >>> plt.title(log.well.WELL.data + ', ' + log.well.DATE.data)
     >>> plt.grid()
     >>> plt.show()
+
+.. image:: https://raw.githubusercontent.com/WarrenWeckesser/las/master/examples/example2.png
+   :alt: Example 2 plot
+   :align: center

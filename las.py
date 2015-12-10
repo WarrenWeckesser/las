@@ -403,7 +403,7 @@ class LASReader(object):
         # to read the data into an array.  For wrapped rows, we use the
         # function _read_wrapped() defined elsewhere in this module.
         # The data type is determined by the items from the '~Curves' section.
-        dt = np.dtype([(name, float) for name in self.curves.names])
+        dt = np.dtype([(str(name), float) for name in self.curves.names])
         if self.wrap:
             a = _read_wrapped_data(f, dt)
         else:
