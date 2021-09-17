@@ -19,6 +19,7 @@ def get_version():
             if len(s) == 2 and s[0] == "__version__":
                 return s[1][1:-1]
 
+
 # Get the long description from README.rst.
 _here = path.abspath(path.dirname(__file__))
 with open(path.join(_here, 'README.rst')) as f:
