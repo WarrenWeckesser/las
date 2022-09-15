@@ -3,6 +3,7 @@ import numpy as np
 import las
 
 
+# Do not remove the trailing whitespace in `case1_other`.
 case1_other = """\
      Note: The logging tools became stuck at 625 metres causing the data 
      between 625 metres and 615 metres to be invalid.
