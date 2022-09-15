@@ -32,6 +32,7 @@ setup(
     description=("A reader for Canadian Well Logging Society LAS "
                  "(Log ASCII Standard) files."),
     long_description=_long_description,
+    long_description_content_type='text/x-rst',
     url="https://github.com/WarrenWeckesser/las",
     license="BSD",
     classifiers=[
