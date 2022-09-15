@@ -26,7 +26,7 @@ import keyword
 import numpy as np
 
 
-__version__ = "0.0.4.dev0"
+__version__ = "0.0.3"
 
 
 def isidentifier(s):
@@ -88,8 +88,14 @@ class LASItem(object):
 
     @classmethod
     def from_line(cls, line):
-        first, descr = line.rsplit(':', 1)
-        descr = descr.strip()
+        try:
+            first, descr = line.rsplit(':', 1)
+            descr = descr.strip()
+        except ValueError:
+            first = line
+            print("Incorrect LAS File. Description Missing.")
+            descr = "UNKNOWN"
+
         name, mid = first.split('.', 1)
         name = name.strip()
         if mid.startswith(' '):
@@ -301,6 +307,7 @@ class LASReader(object):
         self.well = LASSection()
         self.curves = LASSection()
         self.parameters = LASSection()
+        self.tops = LASSection()
         self.other = ''
         self.data = None
 
@@ -357,6 +364,10 @@ class LASReader(object):
                     ignore_blank_lines = True
                 elif current_section_label == 'O':
                     current_section = self.other
+                    ignore_blank_lines = False
+                    other = True
+                elif current_section_label == 'T':
+                    current_section = self.tops
                     ignore_blank_lines = False
                     other = True
                 else:
