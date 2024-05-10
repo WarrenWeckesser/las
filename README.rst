@@ -149,6 +149,6 @@ Finally, make the plot using ``matplotlib``::
     >>> plt.grid()
     >>> plt.show()
 
-.. image:: https://raw.githubusercontent.com/WarrenWeckesser/las/master/examples/example2.png
+.. image:: https://raw.githubusercontent.com/WarrenWeckesser/las/main/examples/example2.png
    :alt: Example 2 plot
    :align: center
