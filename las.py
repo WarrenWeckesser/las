@@ -4,7 +4,7 @@ The main class defined here is LASReader, a class that reads a LAS file
 and makes the data available as a Python object.
 """
 
-# Copyright (c) 2011, 2014 Warren Weckesser
+# Copyright (c) 2011, 2014, 2024 Warren Weckesser
 #
 # Permission to use, copy, modify, and/or distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -18,7 +18,6 @@ and makes the data available as a Python object.
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-from __future__ import print_function
 
 import re
 import keyword
@@ -26,7 +25,7 @@ import keyword
 import numpy as np
 
 
-__version__ = "0.0.4"
+__version__ = "0.0.5dev0"
 
 
 def isidentifier(s):
