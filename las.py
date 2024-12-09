@@ -59,7 +59,7 @@ class LASError(Exception):
     pass
 
 
-class LASItem(object):
+class LASItem:
     """This class is just a namespace, holding the attributes 'name',
     'units', 'data', 'value', and 'descr'.  'value' is the numerical
     value of 'data', if it has a numerical value (specifically, if
@@ -135,7 +135,7 @@ def _read_wrapped_data(f, dt):
     return data
 
 
-class LASSection(object):
+class LASSection:
     """Represents a "section" of a LAS file.
 
     A section is basically a collection of items, where each item has the
@@ -189,7 +189,7 @@ class LASSection(object):
                                         item.descr))
 
 
-class LASReader(object):
+class LASReader:
     """The LASReader class holds data from a LAS file.
 
     This reader only handles LAS 2.0 files (as far as I know).
