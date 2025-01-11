@@ -25,7 +25,7 @@ import keyword
 import numpy as np
 
 
-__version__ = "0.0.6dev0"
+__version__ = "0.0.6dev1"
 
 
 def isidentifier(s):
