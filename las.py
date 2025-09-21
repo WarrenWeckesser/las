@@ -77,13 +77,11 @@ class LASItem:
         self.descr = descr
 
     def __str__(self):
-        s = ("name='%s', units='%s', data='%s', descr='%s'" %
-             (self.name, self.units, self.data, self.descr))
-        return s
+        return (f"name='{self.name}', units='{self.units}', data='{self.data}', "
+                f"descr='{self.descr}'")
 
     def __repr__(self):
-        s = str(self)
-        return "LASItem(%s)" % s
+        return f"LASItem({self})"
 
     @classmethod
     def from_line(cls, line):
@@ -359,7 +357,7 @@ class LASReader:
                     ignore_blank_lines = False
                     other = True
                 else:
-                    raise LASError("Unknown section '%s'" % line)
+                    raise LASError(f"Unknown section '{line}'")
             elif current_section is None:
                 raise LASError("Missing first section.")
             else:
