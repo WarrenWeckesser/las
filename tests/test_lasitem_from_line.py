@@ -1,15 +1,14 @@
-import unittest
 import las
 
 
-class TestLASItemFromLine(unittest.TestCase):
+class TestLASItemFromLine:
 
     def assert_items_equal(self, item1, item2):
-        self.assertEqual(item1.name,  item2.name)
-        self.assertEqual(item1.units, item2.units)
-        self.assertEqual(item1.data,  item2.data)
-        self.assertEqual(item1.value, item2.value)
-        self.assertEqual(item1.descr, item2.descr)
+        assert item1.name == item2.name
+        assert item1.units == item2.units
+        assert item1.data == item2.data
+        assert item1.value == item2.value
+        assert item1.descr == item2.descr
 
     def test_values(self):
         expected = las.LASItem('FOO', units='BAR', data='100', descr='BAZ')
@@ -68,7 +67,3 @@ class TestLASItemFromLine(unittest.TestCase):
         for line in cases:
             item = las.LASItem.from_line(line)
             self.assert_items_equal(item, expected)
-
-
-if __name__ == '__main__':
-    unittest.main()

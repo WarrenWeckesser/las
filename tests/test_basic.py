@@ -1,4 +1,3 @@
-import unittest
 import numpy as np
 import las
 
@@ -21,13 +20,13 @@ dupnames_data2d = np.array([
 ])
 
 
-class LogCheck(unittest.TestCase):
+class LogCheck:
 
     def check_item(self, item, units, data, value, descr):
-        self.assertEqual(item.units, units)
-        self.assertEqual(item.data, data)
-        self.assertEqual(item.value, value)
-        self.assertEqual(item.descr, descr)
+        assert item.units == units
+        assert item.data == data
+        assert item.value == value
+        assert item.descr == descr
 
 
 class TestCase1(LogCheck):
@@ -45,15 +44,15 @@ class TestCase1(LogCheck):
         self.check_case1_log(log, null_subs=None)
 
     def check_case1_log(self, log, null_subs=None):
-        self.assertEqual(log.wrap, False)
-        self.assertEqual(log.vers, '2.0')
-        self.assertEqual(log.start, 1670.0)
-        self.assertEqual(log.start_units, 'M')
-        self.assertEqual(log.stop, 1669.75)
-        self.assertEqual(log.stop_units, 'M')
-        self.assertEqual(log.step, -0.125)
-        self.assertEqual(log.step_units, 'M')
-        self.assertEqual(log.null, -999.25)
+        assert log.wrap == False
+        assert log.vers == '2.0'
+        assert log.start == 1670.0
+        assert log.start_units == 'M'
+        assert log.stop == 1669.75
+        assert log.stop_units == 'M'
+        assert log.step == -0.125
+        assert log.step_units == 'M'
+        assert log.null == -999.25
         np.testing.assert_equal(log.null_subs, null_subs)
 
         self.check_item(log.version.VERS,
@@ -63,7 +62,7 @@ class TestCase1(LogCheck):
                         units='', data='NO', value='NO',
                         descr='ONE LINE PER DEPTH STEP')
 
-        self.assertEqual(log.other, case1_other)
+        assert log.other == case1_other
 
         if null_subs is not None:
             null_locs = case1_data2d == -999.25
@@ -242,7 +241,3 @@ class TestDupNames(LogCheck):
                         descr='MORE MUD TYPE')
 
         np.testing.assert_array_equal(log.data2d, dupnames_data2d)
-
-
-if __name__ == '__main__':
-    unittest.main()
